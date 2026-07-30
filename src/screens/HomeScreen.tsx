@@ -3,7 +3,7 @@ import { CURRENT_USER_ID, personById } from "../data/seed";
 import { Avatar } from "../components/ui";
 import { Target, FileText, Route, Lock } from "../lib/icons";
 
-const USER_EMAIL = "arushi.gupta@emb.global";
+const USER_EMAIL = "arushi.sharma@example.com";
 
 function HawkMark() {
   return (
