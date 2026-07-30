@@ -36,8 +36,8 @@ export function PeopleScreen() {
   const rolesCovered = new Set(PEOPLE.flatMap((p) => p.capabilities)).size;
 
   return (
-    <div className="mx-auto max-w-[1180px] px-6 py-6">
-      <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm sm:p-7">
+    <div className="min-h-[calc(100vh-4rem)] border-b border-stone-200 bg-white">
+      <div className="mx-auto max-w-[1180px] px-6 py-8 sm:px-8">
         {/* Heading */}
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight text-ink">
