@@ -80,7 +80,7 @@ function LoginCard({ onLogin }: { onLogin: () => void }) {
         className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-navy py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-navy-dark"
       >
         <Lock width={16} height={16} />
-        Sign in as {me.name.split(" ")[0]}
+        Sign in
       </button>
 
       <p className="mt-2.5 text-center text-[11px] text-stone-400">

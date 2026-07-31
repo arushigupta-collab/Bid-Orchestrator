@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import type { Assignments, RfpStatus, RoleId } from "./types";
-import { RFPS, PEOPLE, ROLE_ORDER, CURRENT_USER_ID } from "./data/seed";
+import { RFPS, ROLE_ORDER, CURRENT_USER_ID } from "./data/seed";
 import { TopBar } from "./components/TopBar";
 import type { WorkspaceTab } from "./components/TopBar";
 import { MoreHorizontal, Share, Download } from "./lib/icons";
 import { downloadResponseDoc } from "./lib/exportDoc";
 import { HomeScreen } from "./screens/HomeScreen";
 import { InboxScreen } from "./screens/InboxScreen";
-import { PeopleScreen } from "./screens/PeopleScreen";
 import { SummaryDrawer } from "./screens/SummaryDrawer";
 import { BuildTeamScreen } from "./screens/BuildTeamScreen";
 import { TeamOverviewScreen } from "./screens/TeamOverviewScreen";
@@ -17,13 +16,12 @@ import { CompilerScreen } from "./screens/CompilerScreen";
 type Screen =
   | "home"
   | "rfp-feed"
-  | "people"
   | "buildTeam"
   | "teamOverview"
   | "forms"
   | "compiler";
 
-const WORKSPACE: Screen[] = ["home", "rfp-feed", "people"];
+const WORKSPACE: Screen[] = ["home", "rfp-feed"];
 
 const emptyAssignments = (): Assignments => ({
   "bid-manager": CURRENT_USER_ID,
@@ -91,8 +89,7 @@ export default function App() {
   }
 
   const tabs: WorkspaceTab[] = [
-    { id: "rfp-feed", label: "RFP feed", count: rfps.length },
-    { id: "people", label: "People", count: PEOPLE.length },
+    { id: "rfp-feed", label: "Bid Orchestrator", count: rfps.length },
   ];
 
   const compilerActions = (
@@ -121,7 +118,7 @@ export default function App() {
 
   const backConfig =
     screen === "buildTeam"
-      ? { onBack: () => setScreen("rfp-feed"), backLabel: "RFP feed" }
+      ? { onBack: () => setScreen("rfp-feed"), backLabel: "Bid Orchestrator" }
       : screen === "teamOverview"
         ? { onBack: () => setScreen("buildTeam"), backLabel: "Build Team" }
         : screen === "forms"
@@ -160,8 +157,6 @@ export default function App() {
       {screen === "rfp-feed" && (
         <InboxScreen rfps={rfps} onOpen={(id) => setOpenRfpId(id)} />
       )}
-
-      {screen === "people" && <PeopleScreen />}
 
       {screen === "buildTeam" && activeRfp && (
         <BuildTeamScreen

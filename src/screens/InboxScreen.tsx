@@ -55,19 +55,6 @@ export function InboxScreen({
   return (
     <div className="min-h-[calc(100vh-4rem)] border-b border-stone-200 bg-white">
       <div className="mx-auto max-w-[1180px] px-6 py-8 sm:px-8">
-        {/* Heading */}
-        <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-ink">
-              RFP feed
-            </h1>
-            <p className="mt-1 text-sm text-stone-500">
-              Listings matched against your connected sources and routed for
-              triage.
-            </p>
-          </div>
-        </div>
-
         {/* Stats banner */}
         <div className="mb-5 flex flex-wrap items-center justify-between gap-4 rounded-xl bg-stone-100/70 px-5 py-4">
           <div className="flex items-center gap-4">
