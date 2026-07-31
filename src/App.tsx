@@ -78,11 +78,6 @@ export default function App() {
     setAssignments((prev) => ({ ...prev, [roleId]: personId }));
   }
 
-  function goHome() {
-    setOpenRfpId(null);
-    setScreen("home");
-  }
-
   function goTab(id: string) {
     setOpenRfpId(null);
     setScreen(id as Screen);
@@ -136,15 +131,9 @@ export default function App() {
   return (
     <div className="flex min-h-full flex-col">
       {isWorkspace ? (
-        <TopBar
-          onHome={goHome}
-          tabs={tabs}
-          activeTab={screen}
-          onTab={goTab}
-        />
+        <TopBar tabs={tabs} activeTab={screen} onTab={goTab} />
       ) : (
         <TopBar
-          onHome={goHome}
           {...backConfig}
           right={screen === "compiler" ? compilerActions : undefined}
         />

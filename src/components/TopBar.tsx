@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { ArrowLeft } from "../lib/icons";
 
+const PORTAL_URL = "https://emb-bidos.vercel.app/";
+
 export interface WorkspaceTab {
   id: string;
   label: string;
@@ -9,11 +11,7 @@ export interface WorkspaceTab {
 
 function EmbBrand() {
   return (
-    <img
-      src="/emb-global-logo.png"
-      alt="EMB GLOBAL"
-      className="h-9 w-auto"
-    />
+    <img src="/emb-global-logo.png" alt="EMB GLOBAL" className="h-9 w-auto" />
   );
 }
 
@@ -31,7 +29,6 @@ function ProductLabel() {
 }
 
 export function TopBar({
-  onHome,
   tabs,
   activeTab,
   onTab,
@@ -39,7 +36,6 @@ export function TopBar({
   backLabel,
   right,
 }: {
-  onHome: () => void;
   tabs?: WorkspaceTab[];
   activeTab?: string;
   onTab?: (id: string) => void;
@@ -49,10 +45,19 @@ export function TopBar({
 }) {
   return (
     <header className="sticky top-0 z-30 flex h-16 shrink-0 items-stretch justify-between gap-4 border-b border-stone-200 bg-white px-6">
-      <div className="flex items-stretch gap-7">
-        <button onClick={onHome} className="flex items-center">
+      <div className="flex items-stretch gap-5">
+        {/* Back to the BidOS portal */}
+        <a
+          href={PORTAL_URL}
+          className="flex items-center gap-1.5 self-center rounded-lg border border-stone-200 px-2.5 py-1.5 text-sm font-medium text-stone-600 transition hover:bg-stone-50 hover:text-ink"
+        >
+          <ArrowLeft width={16} height={16} />
+          Back
+        </a>
+        <span className="my-3 w-px bg-stone-200" />
+        <a href={PORTAL_URL} className="flex items-center">
           <EmbBrand />
-        </button>
+        </a>
 
         {tabs ? (
           <nav className="flex items-stretch gap-6">
