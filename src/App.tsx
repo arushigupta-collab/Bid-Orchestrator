@@ -8,6 +8,7 @@ import { downloadResponseDoc } from "./lib/exportDoc";
 import { HomeScreen } from "./screens/HomeScreen";
 import { InboxScreen } from "./screens/InboxScreen";
 import { SummaryDrawer } from "./screens/SummaryDrawer";
+import { UnitHeadScreen } from "./screens/UnitHeadScreen";
 import { BuildTeamScreen } from "./screens/BuildTeamScreen";
 import { TeamOverviewScreen } from "./screens/TeamOverviewScreen";
 import { FormsScreen } from "./screens/FormsScreen";
@@ -16,6 +17,7 @@ import { CompilerScreen } from "./screens/CompilerScreen";
 type Screen =
   | "home"
   | "rfp-feed"
+  | "unitHead"
   | "buildTeam"
   | "teamOverview"
   | "forms"
@@ -62,16 +64,33 @@ export default function App() {
 
   function handleAccept(id: string) {
     setStatus(id, "Accepted");
-    const rfp = rfps.find((r) => r.id === id);
-    if (rfp?.detailed) {
-      setActiveRfpId(id);
-      setAssignments(emptyAssignments());
-      setWizardIndex(0);
-      setOpenRfpId(null);
-      setScreen("buildTeam");
-    } else {
-      setOpenRfpId(null);
+    setOpenRfpId(null);
+  }
+
+  function handleSendToUnitHead(id: string) {
+    setActiveRfpId(id);
+    setOpenRfpId(null);
+    setScreen("unitHead");
+  }
+
+  function unitHeadReject() {
+    if (activeRfp) setStatus(activeRfp.id, "Rejected");
+    setScreen("rfp-feed");
+  }
+
+  function unitHeadAccept() {
+    if (activeRfp) {
+      setStatus(activeRfp.id, "Accepted");
+      setOpenRfpId(activeRfp.id);
     }
+    setScreen("rfp-feed");
+  }
+
+  function startBuildTeam() {
+    setOpenRfpId(null);
+    setAssignments(emptyAssignments());
+    setWizardIndex(0);
+    setScreen("buildTeam");
   }
 
   function assign(roleId: RoleId, personId: string) {
@@ -112,7 +131,9 @@ export default function App() {
   );
 
   const backConfig =
-    screen === "buildTeam"
+    screen === "unitHead"
+      ? { onBack: () => setScreen("rfp-feed"), backLabel: "Bid Orchestrator" }
+      : screen === "buildTeam"
       ? { onBack: () => setScreen("rfp-feed"), backLabel: "Bid Orchestrator" }
       : screen === "teamOverview"
         ? { onBack: () => setScreen("buildTeam"), backLabel: "Build Team" }
@@ -145,6 +166,14 @@ export default function App() {
 
       {screen === "rfp-feed" && (
         <InboxScreen rfps={rfps} onOpen={(id) => setOpenRfpId(id)} />
+      )}
+
+      {screen === "unitHead" && activeRfp && (
+        <UnitHeadScreen
+          rfp={activeRfp}
+          onReject={unitHeadReject}
+          onAccept={unitHeadAccept}
+        />
       )}
 
       {screen === "buildTeam" && activeRfp && (
@@ -187,6 +216,8 @@ export default function App() {
           onClose={() => setOpenRfpId(null)}
           onReject={handleReject}
           onAccept={handleAccept}
+          onSendToUnitHead={handleSendToUnitHead}
+          onBuildTeam={startBuildTeam}
         />
       )}
 

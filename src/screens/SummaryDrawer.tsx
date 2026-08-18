@@ -9,6 +9,8 @@ import {
   CrossCircle,
   X,
   FileText,
+  ArrowRight,
+  Check,
 } from "../lib/icons";
 
 function EligibilityIcon({ status }: { status: EligibilityStatus }) {
@@ -24,13 +26,18 @@ export function SummaryDrawer({
   onClose,
   onReject,
   onAccept,
+  onSendToUnitHead,
+  onBuildTeam,
 }: {
   rfp: Rfp;
   onClose: () => void;
   onReject: (id: string) => void;
   onAccept: (id: string) => void;
+  onSendToUnitHead: (id: string) => void;
+  onBuildTeam: (id: string) => void;
 }) {
   const detailed = rfp.detailed;
+  const approved = detailed && rfp.status === "Accepted";
   const [showDoc, setShowDoc] = useState(false);
 
   return (
@@ -187,19 +194,39 @@ export function SummaryDrawer({
         </div>
 
         {/* Sticky footer */}
-        <div className="flex items-center justify-end gap-3 border-t border-stone-200 bg-white px-7 py-4">
-          <button
-            onClick={() => onReject(rfp.id)}
-            className="rounded-lg border border-red-300 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50"
-          >
-            Reject
-          </button>
-          <button
-            onClick={() => onAccept(rfp.id)}
-            className="rounded-lg bg-navy px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-navy-dark"
-          >
-            {detailed ? "Accept and Build Team" : "Accept"}
-          </button>
+        <div className="flex items-center justify-between gap-3 border-t border-stone-200 bg-white px-7 py-4">
+          {approved ? (
+            <>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-600">
+                <Check width={14} height={14} />
+                Approved by Unit Head
+              </span>
+              <button
+                onClick={() => onBuildTeam(rfp.id)}
+                className="flex items-center gap-2 rounded-lg bg-navy px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-navy-dark"
+              >
+                Build Team
+                <ArrowRight width={16} height={16} />
+              </button>
+            </>
+          ) : (
+            <div className="flex w-full items-center justify-end gap-3">
+              <button
+                onClick={() => onReject(rfp.id)}
+                className="rounded-lg border border-red-300 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+              >
+                Reject
+              </button>
+              <button
+                onClick={() =>
+                  detailed ? onSendToUnitHead(rfp.id) : onAccept(rfp.id)
+                }
+                className="rounded-lg bg-navy px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-navy-dark"
+              >
+                {detailed ? "Send to Unit Head" : "Accept"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
